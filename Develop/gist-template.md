@@ -8,25 +8,10 @@ Regex is a sequence of characters that defines a specific search pattern.  When 
 
 [Character Classes](#CharacterClasses)  
 [Anchors](#Anchors)   
-[Quantifiers](#Quatifiers)  
-[OR Operator](#OROperator)  
-Flags  
-Grouping and Capturing  
-Bracket Expressions  
-Greedy and Lazy Match  
-Boundaries  
-Back-references  
-Look-ahead and Look-behind  
-Anchors    
-OR Operator  
-Character Classes  
-Flags  
-Grouping and Capturing  
-Bracket Expressions  
-Greedy and Lazy Match  
-Boundaries  
-Back-references  
-Look-ahead and Look-behind  
+[Quantifiers](#Quatifiers)   
+[Grouping and Capturing](#GroupingAndCapturing)  
+[Bracket Expressions](#BracketExpression)  
+ 
   
 ## Understanding the Fundamentals of Regexs  
   
@@ -99,12 +84,21 @@ A pattern /Me{1}/g (This is saying search for a "M" and 1 "e") will return Me, M
 
 The quantifier {1,2} means the range matches a character or character class from 1 to 2 times.  
 A pattern /Me{1,2}/g (This is saying search for "M" and 1 "e" or 2 "e") will return Me, Mee  
-```
+```  
+  
+### <ins>Grouping and Capturing<ins>  
+Grouping expression allow things to be more organized and easier to understand of a given group.  Grouping is done with parenthesis "()"
+  
+### <ins>Bracket Expression<ins>
+The square brackets "[]" serve as an alternative.  This will search for one or the other elments in the list.
 
 ## Putting the Fundamental of regex to use
 From the fundamental of regexes let's put this all together to understand how regexes uses the expression to match a URL.  
 
+The regex expression is:
 `/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$`    
+
+How does this match `https://www.google.com/`
 
 Let's start from the beginning and ending of the expression.  
 `/` and `/`  
@@ -112,12 +106,35 @@ This define the regular expression boundary
 
 The next character is ^.  This the anchor that defines the start of the expression.
 
-Next, let's look inside of the parenthesis `(https?:\/\/)`.  The search will start with "h" "t" "t" "p" with an option for "s". Either https or http will be search.  After either http or https, there will be a ":".  After the ":" the 2 "\/" are literally "//".  Inside the parenthesis there are two options to search for:
+Next, let's look inside of the first grouping `(https?:\/\/)`.  The search will start with "h" "t" "t" "p" with an option for "s" (because there's a ? after the s). Either https or http will be search.  After either http or https, there will be a ":".  After the ":" the 2 "\/" are "//".  Inside the the first grouping there are two options to search for:
 
-- http://
-- https://
+1. http://  
+  OR
+2. https://
 
-The 
+After the first grouping, there's another "?".  This is question mark give another option of either
+http://, https:// or nothing.
+
+So far the expression has match up to `https://` of `https://www.google.com/`.
+  
+Now let review the second grouping, `([\da-z\.-]+)`.   The bracket is essentially an "or" statement; therefore, the express is checking for an integer with `\d`, any lower case letter with `a-z`,  a period with `\.` or a dash with `-`.  The expression can have one of these condition or all of these conditions.  Outside of the bracket is a plus sign, the plus sign signifies 1 or more combination.  
+  
+After the second grouping, there is a `\.`.  This expression is for a dot or period.  
+  
+After the second grouping and the period, our expression is extended to `https://www.google.` of `https://www.google.com/`. 
+  
+On to the third grouping, `([a-z\.]{2,6})`.  Again the bracket is an "or" statment; therefore, the expression is checking for any lower case letter with `a-z` or a period with `\.`.  After the brackert, there two numbers inside of a curly brackets.  The first number "2" is the min length and the second number "6" is the max length.
+
+After the third grouping, our expression now matches up to the `https://www.google.com` of `https://www.google.com/`.
+
+The last grouping is `([\/\w \.-]*)*\/?`.  Again the bracket expression for a `/`, any word combination with upper and lower case letters and intege with `\w`, a period or dash.  The `*` after the bracket means zero or more.  The other `*` outside of the paranthesis means the same but it implies to everything inside of the bracket.  The  `\/?` is an option for a `/` or no`/`.
+
+This should conclude the example for `https://www.google.com/`.
+
+The remains character in the expression is `$`.  This signifies the end of the expression.
 
 ## Author
-A short section about the author with a link to the author's GitHub profile (replace with your information and a link to your profile)
+This tutorial was created by TC Yang.  A manufacturing engineer, inspiring to become a software engineer by attending Bulter Coding Bootcamp.  If you found this useful, email me at tcknyaj@gmail.com.
+
+TC Yang
+tcknyaj@gmail.com
